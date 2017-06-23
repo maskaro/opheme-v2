@@ -1,0 +1,10 @@
+!.gitignore
+*.log
+*.count
+*.txt
+settings.inc.php
+*.tpl.php
+.DS_Store
+/templates_c
+/nbproject
+/.gradle

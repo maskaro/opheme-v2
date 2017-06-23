@@ -1,0 +1,28 @@
+#AuthName "Secure Area"
+#AuthType Basic
+#AuthUserFile /opt/.htpasswd
+#require valid-user
+
+Options +FollowSymlinks
+
+SetEnv SLIM_MODE production
+
+RewriteEngine On
+
+# prevent endless loop
+RewriteCond %{ENV:REDIRECT_STATUS} 200
+RewriteRule ^ - [L]
+
+RewriteBase /
+
+RewriteCond %{HTTP_REFERER} !^https?://(.*)?(opheme|twadar).(com|net)/ [NC]
+RewriteCond %{REQUEST_URI} (\.(ico|gif|jpe?g|png|css|js|swf|otf|eot|svg|ttf|woff))$
+RewriteCond %{REQUEST_URI} !(oPheme-logo\.png)$
+RewriteCond %{REQUEST_URI} !(logo-type\.png)$
+RewriteCond %{REQUEST_URI} !(grey-logo\.png)$
+RewriteCond %{REQUEST_URI} !(logo-128\.png)$
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule \.(ico|gif|jpe?g|png|css|js|swf|otf|eot|svg|ttf|woff)$ - [F,L]
+
+RewriteCond %{REQUEST_URI} !(\.(ico|gif|jpe?g|png|css|js|swf|otf|eot|svg|ttf|woff))$
+RewriteRule ^([a-zA-Z0-9\-]+)*/?([a-zA-Z0-9\-]+)*/?(.+)*$ /index.php?module=$1&task=$2&extra=$3 [L,QSA]
